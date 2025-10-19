@@ -1,0 +1,33 @@
+# Cabal build artifacts
+dist-newstyle/
+.cabal-sandbox/
+cabal.project.local
+.ghc.environment.*
+
+# Generated files
+*.hi
+*.o
+*.dyn_hi
+*.dyn_o
+*.prof
+*.tix
+*.hpc
+*.dump-*
+*.s
+*.ll
+*.bc
+
+# Editor and OS specific files
+.vscode/
+.idea/
+*.swp
+*~
+.#*
+.DS_Store
+Thumbs.db
+
+# Test results
+test-results/
+
+# Documentation
+doc/html/
