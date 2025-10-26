@@ -12,7 +12,9 @@ data JsonValue
   | JsonObject [(String, JsonValue)]
   deriving (Show, Eq)
 
--- NOTE: no proper error reporting
+{- | A data type represents the parsing string into a certain data format
+  NOTE: no proper error reporting
+-}
 newtype Parser a = Parser
   { runParser :: String -> Maybe (String, a)
   }
@@ -40,17 +42,16 @@ jsonNull = JsonNull <$ stringP "null"
 
 jsonBool :: Parser JsonValue
 jsonBool = f <$> (stringP "true" <|> stringP "false")
-  where f "true"  = JsonBool True
-        f "false" = JsonBool False
-        -- This should never happen
-        f _       = undefined
+ where
+  f "true" = JsonBool True
+  f _ = JsonBool False -- Since the range of arguments is restricted to two options, namely "true" or "false", f need not distinct strings other than "true"
 
 spanP :: (Char -> Bool) -> Parser String
 spanP f = Parser $ \input ->
   let (token, rest) = span f input
-  in case token of
-    [] -> Nothing
-    _ -> Just (rest, token)
+   in case token of
+        [] -> Nothing
+        _ -> Just (rest, token)
 
 notNull :: Parser [a] -> Parser [a]
 notNull (Parser p) =
@@ -62,7 +63,14 @@ notNull (Parser p) =
 
 jsonNumber :: Parser JsonValue
 jsonNumber = f <$> notNull (spanP isDigit)
-  where f = JsonNumber . read
+ where
+  f = JsonNumber . read
+
+stringLiteral :: Parser String
+stringLiteral = spanP ('"' /=)
+
+jsonString :: Parser JsonValue
+jsonString = JsonString <$> (charP '"' *> spanP ('"' /=) <* charP '"')
 
 jsonValue :: Parser JsonValue
 jsonValue = jsonNull <|> jsonBool <|> jsonNumber
