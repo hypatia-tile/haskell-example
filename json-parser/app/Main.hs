@@ -2,15 +2,7 @@ module Main where
 
 import Control.Applicative
 import Data.Char
-
-data JsonValue
-  = JsonNull
-  | JsonBool Bool
-  | JsonNumber Integer -- NOTE: no support for floats
-  | JsonString String
-  | JsonArray [JsonValue]
-  | JsonObject [(String, JsonValue)]
-  deriving (Show, Eq)
+import JsonVal
 
 {- | A data type represents the parsing string into a certain data format
   NOTE: no proper error reporting

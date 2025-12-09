@@ -50,6 +50,13 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
+library
+    import:           warnings
+    exposed-modules:  JsonVal
+    build-depends:    base ^>=4.18.3.0
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
 executable scratchaskell-json
     -- Import common warning flags.
     import:           warnings
@@ -64,7 +71,7 @@ executable scratchaskell-json
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.3.0
+    build-depends:    base ^>=4.18.3.0,
 
     -- Directories containing source files.
     hs-source-dirs:   app
